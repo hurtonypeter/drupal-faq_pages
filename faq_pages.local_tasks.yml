@@ -1,0 +1,5 @@
+faq_pages.list-pages:
+    title: 'Custom pages'
+    route_name: faq_pages.list
+    base_route: system.admin_config_content
+    weight: 15

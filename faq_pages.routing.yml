@@ -1,0 +1,22 @@
+faq_pages.list:
+    path: '/admin/config/content/faq/faq-pages'
+    defaults:
+        _title: 'Custom FAQ Pages'
+        _content: 'Drupal\faq_pages\Controller\FaqPagesController::listPages'
+    requirements:
+        _permission: 'create faq pages'
+
+faq_pages.create:
+    path: '/admin/config/content/faq/new-page'
+    defaults:
+        _title: 'Create custom FAQ page'
+        _content: 'Drupal\faq_pages\Controller\FaqPagesController:editPage'
+    requirements:
+        _permission: 'create faq pages'
+
+faq_pages.custom-page:
+    path: '/faq/{page}'
+    defaults:
+        _content: 'Drupal\faq_pages\Controller\FaqPagesController::viewPage'
+    requirements:
+        _permission: 'view faq page'
