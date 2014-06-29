@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * The FAQ Pages module allows users to create custom FAQ pages from terms. 
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function faq_pages_permission() {
+  return array(
+    'create faq pages' => array(
+      'title' => t('Create FAQ Pages'),
+      'description' => t('Allows user to create custom FAQ pages from taxonomy terms.'),
+    ),
+  );
+}

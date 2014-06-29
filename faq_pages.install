@@ -1,0 +1,121 @@
+<?php
+
+/**
+ * @file
+ * FAQ Pages module install file.
+ */
+
+/**
+ * Implements hook_schema()
+ */
+function faq_pages_schema() {
+  return array(
+    'faq_sites' => array(
+      'description' => 'Contains the custom FAQ sites.',
+      'fields' => array(
+        'sid' => array(
+          'description' => 'FAQ site identifier.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ),
+        'url' => array(
+          'description' => 'Availability of the FAQ page.',
+          'type' => 'varchar',
+          'length' => '128',
+          'not null' => TRUE,
+        ),
+        'title' => array(
+          'description' => 'Title of the FAQ page.',
+          'type' => 'varchar',
+          'length' => '256',
+        ),
+        'description' => array(
+          'description' => 'Description of the FAQ page.',
+          'type' => 'text',
+        ),
+      ),
+      'primary key' => array('sid'),
+      'indexes' => array(
+        'sid' => array('sid'),
+      ),
+    ),
+    'faq_sites_blocks' => array(
+      'description' => 'Contains the blocks of the FAQ sites.',
+      'fields' => array(
+        'bid' => array(
+          'description' => 'Block identifier.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ),
+        'sid' => array(
+          'description' => 'FAQ site identifier.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ),
+        'name' => array(
+          'description' => 'The name of the block',
+          'type' => 'varchar',
+          'length' => '256',
+        ),
+      ),
+      'primary key' => array('bid'),
+      'indexes' => array(
+        'bid' => array('bid'),
+      ),
+    ),
+    'faq_sites_topics' => array(
+      'description' => 'Contains the topics of the FAQ sites blocks.',
+      'fields' => array(
+        'toid' => array(
+          'descripction' => 'Idenfifier from the topic.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ),
+        'bid' => array(
+          'description' => 'Block identifier.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ),
+        'name' => array(
+          'description' => 'The name of the block',
+          'type' => 'varchar',
+          'length' => '256',
+        ),
+        'description' => array(
+          'description' => 'Description of the FAQ page.',
+          'type' => 'text',
+        ),
+      ),
+      'primary key' => array('toid'),
+      'indexes' => array(
+        'toid' => array('toid'),
+      ),
+    ),
+    'faq_sites_terms' => array(
+      'description' => 'Links the topics and taxnomy terms.',
+      'fields' => array(
+        'toid' => array(
+          'descripction' => 'Idenfifier from the topic.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ),
+        'tid' => array(
+          'descripction' => 'Term identifier.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+        ),
+      ),
+      'primary key' => array('toid', 'tid'),
+      'indexes' => array(
+        'toid' => array('toid', 'tid'),
+      ),
+    ),
+  );
+}

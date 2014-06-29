@@ -1,0 +1,8 @@
+name: 'FAQ Pages'
+type: module
+description: 'Help the user to set up custom faq pages from related terms.'
+core: 8.x
+version: VERSION
+package: FAQ
+dependencies:
+ - faq
