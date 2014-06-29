@@ -3,3 +3,10 @@ faq_pages.list-pages:
     route_name: faq_pages.list
     base_route: system.admin_config_content
     weight: 15
+
+faq_pages.view-page:
+    route_name: faq_pages.custom-page
+    base_route: faq_pages.custom-page
+faq_pages.edit-page:
+    route_name: faq_pages.edit-page
+    base_route: faq_pages.custom-page
