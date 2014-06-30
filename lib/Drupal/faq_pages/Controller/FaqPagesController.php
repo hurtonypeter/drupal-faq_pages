@@ -28,9 +28,9 @@ class FaqPagesController extends ControllerBase {
       drupal_set_message($this->t('You need to link at least one vocabulary to the FAQ content type.'), 'error');
       return;
     }
-    
+
     $build = array();
-    
+
     $query = db_select('faq_sites', 'fs');
     $query->fields('fs', array('sid', 'title', 'url', 'description'));
     $result = $query->execute()->fetchAllAssoc('sid');
@@ -57,15 +57,15 @@ class FaqPagesController extends ControllerBase {
 
     $build['new'] = array(
       '#type' => 'markup',
-      '#markup' => l($this->t('Add new FAQ page'), '/admin/config/content/faq/new-page', array('attributes' => array('class' => array('button button--primary button--small button-action')))).'<br /> <br />',
+      '#markup' => l($this->t('Add new FAQ page'), '/admin/config/content/faq/new-page', array('attributes' => array('class' => array('button button--primary button--small button-action')))) . '<br /> <br />',
     );
-    
+
     $build['table'] = array(
       '#type' => 'table',
       '#header' => array($this->t('Title'), $this->t('Path'), $this->t('Description'), $this->t('Operations')),
       '#rows' => $rows,
     );
-    
+
     return $build;
   }
 
@@ -75,9 +75,6 @@ class FaqPagesController extends ControllerBase {
     $query->fields('ttd', array('tid', 'name', 'vid'));
     $query->condition('vid', array_keys($vocabs));
     $terms = $query->execute()->fetchAllAssoc('tid');
-    
-    
-    
   }
 
   /**
@@ -88,14 +85,40 @@ class FaqPagesController extends ControllerBase {
    * @return array Render array with the content.
    */
   public function viewPage($page) {
-    
+
     if (!FaqPageViewModel::isExists($page)) {
       throw new NotFoundHttpException();
     }
-    $build = array();
-    
     $model = new FaqPageViewModel($page);
-    
+
+    $build = array();
+    $build['#title'] = $model->getTitle();
+    $build['#attached']['js'] = array(
+      array(
+        'data' => drupal_get_path('module', 'faq_pages') . '/js/faq_pages.js'
+      ),
+    );
+
+    $blocks_render = array(
+      '#theme' => 'faq_pages_blocks',
+      '#blocks' => $model->getBlocks(),
+    );
+    $blocks = drupal_render($blocks_render);
+
+    $questions_render = array(
+      '#theme' => 'faq_pages_questions',
+      '#topics' => $model->getTopics(),
+    );
+    $questions = drupal_render($questions_render);
+
+    $content = array(
+      '#theme' => 'faq_pages_page',
+      '#description' => $model->getDescription(),
+      '#blocks' => $blocks,
+      '#questions' => $questions,
+    );
+    $build['#type'] = 'markup';
+    $build['#markup'] = drupal_render($content);
     return $build;
   }
 

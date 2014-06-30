@@ -1,0 +1,28 @@
+{#
+/**
+ * @file
+ * Template file for the FAQ pages blocks.
+ * 
+ * Available variables:
+ * - blocks: blocks of the current FAQ page
+ *   - id: identifier for the block
+ *   - title: title of the block
+ *   - topics: array containing the topics of the block
+ *     - id: identifier of the topic
+ *     - name: title of the topic
+ *     - description: description of the topic
+ * 
+ * @ingroup themable
+ */
+#}
+
+{% for block in blocks %}
+    <div class="block">
+        <h3>{{ block.title }}</h3>
+        <ul>
+        {% for topic in block.topics %}
+            <li><a href="#" data-target="{{ topic.id }}" class="topic-link">{{ topic.name }}</a></li>
+        {% endfor %}
+        </ul>
+    </div> 
+{% endfor %}

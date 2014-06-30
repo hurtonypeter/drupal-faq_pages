@@ -1,0 +1,45 @@
+{#
+/**
+ * @file
+ * Template file for the FAQ pages topics.
+ * 
+ * Available variables:
+ * - topics: contains all topics to compose the page
+ *   - toid: identifier for the topic
+ *   - title: title of the topic
+ *   - description: description of the topic
+ *   - terms: array containing the terms of a topic
+ *     - term: name of the term
+ *     - nodes: nodes of the term
+ *       - nid: identifier of the node
+ *       - title: title of the node
+ *   - nodes: array of the full nodes of a topic
+ *     - nid: node identifier
+ *     - title: title of the node
+ *     - content: full rendered content of the node
+ * 
+ * @see template_preprocess_faq_pages_questions()
+ * 
+ * @ingroup themable
+ */
+#}
+
+{% for topic in topics %}
+    <div id="topic-{{ topic.toid }}" class="topic">
+        <h2>{{ topic.title }}</h2>
+        <p>{{ topic.description }}</p>
+        {% for term in topic.terms %}
+            <strong>{{ term.term }}</strong>
+            <ul>
+                {% for node in term.nodes %}
+                    <li><a href="#node-{{ node.nid }}">{{ node.title }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+        <div class="nodes-container">
+            {% for node in topic.nodes %}
+                {{ node.content }}
+            {% endfor %}
+        </div>
+    </div>
+{% endfor %}

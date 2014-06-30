@@ -1,0 +1,25 @@
+{#
+/**
+ * @file
+ * Template file for a custom FAQ page.
+ * 
+ * Available variables:
+ * - description: description of the FAQ page.
+ * - blocks: this is a table of contents about the FAQ page, links to the topics
+ * - questions: content of the topics
+ * 
+ * @ingroup themable
+ */
+#}
+
+<div class="page-description">
+    {{ description }}
+</div>
+<div class="page-content">
+    <div class="blocks" style="width:30%;float:left;">
+        {{ blocks }}
+    </div>
+    <div class="topics" style="width:70%;float:left;">
+        {{ questions }}
+    </div>
+</div>
