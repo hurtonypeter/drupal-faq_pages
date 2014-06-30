@@ -8,6 +8,9 @@
 namespace Drupal\faq_pages\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\faq\FaqHelper;
+use Drupal\faq_pages\FaqPageViewModel;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Controller routines for FAQ Pages routes.
@@ -20,6 +23,12 @@ class FaqPagesController extends ControllerBase {
    * @return array Render array with the FAQ pages.
    */
   public function listPages() {
+    $vocabs = FaqHelper::faqRelatedVocabularies();
+    if (empty($vocabs)) {
+      drupal_set_message($this->t('You need to link at least one vocabulary to the FAQ content type.'), 'error');
+      return;
+    }
+    
     $build = array();
     
     $query = db_select('faq_sites', 'fs');
@@ -61,11 +70,33 @@ class FaqPagesController extends ControllerBase {
   }
 
   public function editPage() {
+    $vocabs = FaqHelper::faqRelatedVocabularies();
+    $query = db_select('taxonomy_term_data', 'ttd');
+    $query->fields('ttd', array('tid', 'name', 'vid'));
+    $query->condition('vid', array_keys($vocabs));
+    $terms = $query->execute()->fetchAllAssoc('tid');
+    
+    
     
   }
 
-  public function viewPage() {
+  /**
+   * Shows the given FAQ-page.
+   * 
+   * @param int $page
+   *   Identifier of the custom FAQ page.
+   * @return array Render array with the content.
+   */
+  public function viewPage($page) {
     
+    if (!FaqPageViewModel::isExists($page)) {
+      throw new NotFoundHttpException();
+    }
+    $build = array();
+    
+    $model = new FaqPageViewModel($page);
+    
+    return $build;
   }
 
 }
