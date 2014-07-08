@@ -93,11 +93,8 @@ class FaqPagesController extends ControllerBase {
 
     $build = array();
     $build['#title'] = $model->getTitle();
-    $build['#attached']['js'] = array(
-      array(
-        'data' => drupal_get_path('module', 'faq_pages') . '/js/faq_pages.js'
-      ),
-    );
+    
+    $build['#attached']['library'][] = 'faq_pages/faq_page-scripts';
 
     $blocks_render = array(
       '#theme' => 'faq_pages_blocks',

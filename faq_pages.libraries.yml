@@ -1,0 +1,7 @@
+faq_page-scripts:
+    version: VERSION
+    js:
+        js/faq_pages.js: {}
+    dependencies:
+        - core/jquery
+        - core/drupal

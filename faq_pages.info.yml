@@ -6,3 +6,5 @@ version: VERSION
 package: FAQ
 dependencies:
  - faq
+libraries:
+ - faq_pages/faq_page-scripts
