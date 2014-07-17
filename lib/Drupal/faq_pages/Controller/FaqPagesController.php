@@ -62,7 +62,7 @@ class FaqPagesController extends ControllerBase {
 
     $build['table'] = array(
       '#type' => 'table',
-      '#header' => array($this->t('Title'), $this->t('Path'), $this->t('Description'), $this->t('Operations')),
+      '#header' => array($this->t('Title'), $this->t('Description'), $this->t('Path'), $this->t('Operations')),
       '#rows' => $rows,
     );
 
