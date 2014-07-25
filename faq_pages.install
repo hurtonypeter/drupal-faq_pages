@@ -10,7 +10,7 @@
  */
 function faq_pages_schema() {
   return array(
-    'faq_sites' => array(
+    'faq_pages' => array(
       'description' => 'Contains the custom FAQ sites.',
       'fields' => array(
         'sid' => array(
@@ -40,7 +40,7 @@ function faq_pages_schema() {
         'sid' => array('sid'),
       ),
     ),
-    'faq_sites_blocks' => array(
+    'faq_pages_blocks' => array(
       'description' => 'Contains the blocks of the FAQ sites.',
       'fields' => array(
         'bid' => array(
@@ -66,7 +66,7 @@ function faq_pages_schema() {
         'bid' => array('bid'),
       ),
     ),
-    'faq_sites_topics' => array(
+    'faq_pages_topics' => array(
       'description' => 'Contains the topics of the FAQ sites blocks.',
       'fields' => array(
         'toid' => array(
@@ -96,7 +96,7 @@ function faq_pages_schema() {
         'toid' => array('toid'),
       ),
     ),
-    'faq_sites_terms' => array(
+    'faq_pages_terms' => array(
       'description' => 'Links the topics and taxnomy terms.',
       'fields' => array(
         'toid' => array(

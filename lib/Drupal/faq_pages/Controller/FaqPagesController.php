@@ -31,8 +31,8 @@ class FaqPagesController extends ControllerBase {
 
     $build = array();
 
-    $query = db_select('faq_sites', 'fs');
-    $query->fields('fs', array('sid', 'title', 'url', 'description'));
+    $query = db_select('faq_pages', 'fp');
+    $query->fields('fp', array('sid', 'title', 'url', 'description'));
     $result = $query->execute()->fetchAllAssoc('sid');
 
     $rows = array();
@@ -75,6 +75,13 @@ class FaqPagesController extends ControllerBase {
     $query->fields('ttd', array('tid', 'name', 'vid'));
     $query->condition('vid', array_keys($vocabs));
     $terms = $query->execute()->fetchAllAssoc('tid');
+    
+    $build = array();
+    $build['#title'] = 'haha szerkesztünk';
+    $build['#attached']['library'][] = 'faq_pages/faq_page-edit';
+    
+    
+    return $build;
   }
 
   /**

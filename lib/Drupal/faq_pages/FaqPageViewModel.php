@@ -66,7 +66,7 @@ class FaqPageViewModel {
    * @return boolean TRUE if a FAQ page exists with this id, else FALSE.
    */
   public static function isExists($sid) {
-    $query = db_select('faq_sites', 'fs');
+    $query = db_select('faq_pages', 'fs');
     $query->fields('fs', array('sid'));
     $query->condition('fs.sid', $sid);
     $result = $query->execute()->fetchCol('sid');
@@ -86,10 +86,10 @@ class FaqPageViewModel {
    * @return array Raw data of the FAQ page from the database.
    */
   private function queryDatabase() {
-    $query = db_select('faq_sites', 's');
-    $query->rightJoin('faq_sites_blocks', 'b', 'b.sid = s.sid');
-    $query->rightJoin('faq_sites_topics', 'topic', 'topic.bid = b.bid');
-    $query->rightJoin('faq_sites_terms', 't', 't.toid = topic.toid');
+    $query = db_select('faq_pages', 's');
+    $query->rightJoin('faq_pages_blocks', 'b', 'b.sid = s.sid');
+    $query->rightJoin('faq_pages_topics', 'topic', 'topic.bid = b.bid');
+    $query->rightJoin('faq_pages_terms', 't', 't.toid = topic.toid');
     $query->rightJoin('taxonomy_index', 'ti', 'ti.tid = t.tid');
     $query->fields('s', array('sid', 'title', 'description'));
     $query->fields('b', array('bid', 'name'));
