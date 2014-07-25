@@ -6,5 +6,7 @@ version: VERSION
 package: FAQ
 dependencies:
  - faq
+ - angularjs
 libraries:
  - faq_pages/faq_page-scripts
+ - faq_pages/faq_page-edit
