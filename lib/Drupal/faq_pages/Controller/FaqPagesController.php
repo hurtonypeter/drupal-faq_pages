@@ -77,9 +77,22 @@ class FaqPagesController extends ControllerBase {
     $terms = $query->execute()->fetchAllAssoc('tid');
     
     $build = array();
-    $build['#title'] = 'haha szerkesztünk';
+    $build['#title'] = $this->t("Create custom FAQ page");
     $build['#attached']['library'][] = 'faq_pages/faq_page-edit';
+    $build['#attached']['js'] = array(
+      array(
+        'data' => array(
+          'term_model' => $terms,
+        ),
+        'type' => 'setting'
+      )
+    );
     
+    $content = array(
+      '#theme' => 'faq_page_edit',
+    );
+    $build['#type'] = 'markup';
+    $build['#markup'] = drupal_render($content);
     
     return $build;
   }

@@ -34,6 +34,10 @@ function faq_pages_theme() {
       'template' => 'faq-pages-questions',
       'variables' => array('topics' => NULL),
     ),
+    'faq_page_edit' => array(
+      'template' => 'faq-page-edit',
+      'variables' => array(),
+    ),
   );
 }
 

@@ -11,4 +11,5 @@ faq_page-edit:
     js:
          js/faq-page-edit.js: {}
     dependencies:
-        - angularjs/dragdrop
+        - angularjs/angular-dragdrop
+        - angularjs/angular-sortable
