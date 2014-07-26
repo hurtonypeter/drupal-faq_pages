@@ -1,6 +1,6 @@
 (function($) {
   "use strict";
-  
+
   var guid = (function() {
     function s4() {
       return Math.floor((1 + Math.random()) * 0x10000)
@@ -34,8 +34,8 @@
       {id: 2, name: 'blocck2', description: 'blockdecrtiption2', terms: []},
       {id: 3, name: 'blokk3', description: 'blockdecrtiption3', terms: []}
     ];
-    
-    $scope.newBlock = function(){
+
+    $scope.newBlock = function() {
       $scope.blocks.push({
         id: null,
         name: '',
@@ -45,28 +45,37 @@
     };
 
     $scope.deleteBlock = function(id) {
+      $scope.blocks.splice(id, 1);
+    };
 
-    };
-    
     $scope.termUp = function(term, block) {
-      var temp = $scope.blocks[block].terms[term-1];
-      $scope.blocks[block].terms[term-1] = $scope.blocks[block].terms[term];
+      var temp = $scope.blocks[block].terms[term - 1];
+      $scope.blocks[block].terms[term - 1] = $scope.blocks[block].terms[term];
       $scope.blocks[block].terms[term] = temp;
     };
-    
+
     $scope.termDown = function(term, block) {
-      var temp = $scope.blocks[block].terms[term+1];
-      $scope.blocks[block].terms[term+1] = $scope.blocks[block].terms[term];
+      var temp = $scope.blocks[block].terms[term + 1];
+      $scope.blocks[block].terms[term + 1] = $scope.blocks[block].terms[term];
       $scope.blocks[block].terms[term] = temp;
+    };
+
+    $scope.blockUp = function(block) {
+      var temp = $scope.blocks[block - 1];
+      $scope.blocks[block - 1] = $scope.blocks[block];
+      $scope.blocks[block] = temp;
+    };
+
+    $scope.blockDown = function(block) {
+      var temp = $scope.blocks[block + 1];
+      $scope.blocks[block + 1] = $scope.blocks[block];
+      $scope.blocks[block] = temp;
     };
 
     $scope.hideMe = function(terms) {
       return terms.length == 0;
     };
     
-    $scope.log = function(){
-      console.log($scope.blocks);
-    };
   });
 
 })(jQuery);

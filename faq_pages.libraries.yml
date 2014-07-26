@@ -1,15 +1,18 @@
 faq_page-scripts:
-    version: VERSION
-    js:
-        js/faq-page.js: {}
-    dependencies:
-        - core/jquery
-        - core/drupal
+  version: VERSION
+  js:
+    js/faq-page.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
 
 faq_page-edit:
-    version: VERSIOn
-    js:
-         js/faq-page-edit.js: {}
-    dependencies:
-        - angularjs/angular-dragdrop
-        - angularjs/angular-sortable
+  version: VERSION
+  js:
+    js/faq-page-edit.js: {}
+  css:
+    component:
+      css/faq-page-edit.css: {}
+  dependencies:
+      - angularjs/angular-dragdrop
+      - angularjs/angular-sortable
