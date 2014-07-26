@@ -13,7 +13,7 @@
     };
   })();
 
-  var app = angular.module('probaApp', ['ngDragDrop', 'ui.sortable']);
+  var app = angular.module('probaApp', ['ngDragDrop']);
   app.value('$', $);
 
   //config start and end symbol not cause conflict with twig

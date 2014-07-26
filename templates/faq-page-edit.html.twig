@@ -18,7 +18,7 @@
           </div>
         </div>
 
-        <h2>Blocks</h2><a href="" ng-click="log()">log</a>
+        <h2>Blocks</h2>
         <div ng-repeat="block in blocks" style="position:relative;border:1px solid #ccc;padding:10px;margin-bottom:15px;">
           <label>Block title</label>
           <input type="text" ng-model="block.name" />
@@ -32,8 +32,7 @@
                   data-drag="true"
                   data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" 
                   ng-model="block.terms" 
-                  jqyoui-draggable="{index: {[{$index}]},animate:true}"
-                  ui-sortable>
+                  jqyoui-draggable="{index: {[{$index}]},animate:true}">
                 <td><a href="" ng-show="!$first" ng-click="termUp($index, $parent.$index)">up</a></td>
                 <td><a href="" ng-show="!$last" ng-click="termDown($index, $parent.$index)">down</a></td>
                 <td>{[{term.name}]}</td>
