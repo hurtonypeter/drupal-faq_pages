@@ -18,25 +18,31 @@
           </div>
         </div>
 
-        <h2>Blocks</h2>
-        <p><a href="" ng-click="newBlock()">Add new block</a></p>
+        <h2>Blocks</h2><a href="" ng-click="log()">log</a>
         <div ng-repeat="block in blocks" style="border:1px solid #ccc;padding:10px;margin-bottom:15px;">
           <label>Block title</label>
           <input type="text" ng-model="block.name" />
           <label>Description</label>
           <textarea ng-model="block.description"></textarea>
           <label>Terms</label>
-          <ol data-drop="true" ng-model="block.terms" jqyoui-droppable="{multiple:true}">
-            <li ng-repeat="term in block.terms track by $index" 
+          <table>
+            <tbody data-drop="true" ng-model="block.terms" jqyoui-droppable="{multiple:true}">
+              <tr ng-repeat="term in block.terms track by $index" 
                 ng-show="term.name" 
                 data-drag="true"
                 data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" 
                 ng-model="block.terms" 
                 jqyoui-draggable="{index: {[{$index}]},animate:true}"
-                ui-sortable>{[{term.name}]}</li>
-            <li class="placeholder" ng-show="hideMe(block.terms)">((Add your items here))</li>
-          </ol>
+                ui-sortable>
+                <td><a href="" ng-show="!$first" ng-click="termUp($index, $parent.$index)">up</a></td>
+                <td><a href="" ng-show="!$last" ng-click="termDown($index, $parent.$index)">down</a></td>
+                <td>{[{term.name}]}</td>
+              </tr>
+              <tr colspan="3" ng-show="hideMe(block.terms)"><td>((Add your items here))</td></tr>
+            </tbody>
+          </table>
         </div>
+        <p><a href="" ng-click="newBlock()">Add new block</a></p>
       </div>
       
       <div style="width:27%;float:left;padding-left:3%;">

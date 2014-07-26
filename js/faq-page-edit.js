@@ -31,7 +31,7 @@
     $scope.description = "little descrp";
     $scope.blocks = [
       {id: 1, name: 'blokk1', description: 'blockdecrtiption1', terms: []},
-      {id: null, name: 'blocck2', description: 'blockdecrtiption2', terms: []},
+      {id: 2, name: 'blocck2', description: 'blockdecrtiption2', terms: []},
       {id: 3, name: 'blokk3', description: 'blockdecrtiption3', terms: []}
     ];
     
@@ -47,10 +47,25 @@
     $scope.deleteBlock = function(id) {
 
     };
+    
+    $scope.termUp = function(term, block) {
+      var temp = $scope.blocks[block].terms[term-1];
+      $scope.blocks[block].terms[term-1] = $scope.blocks[block].terms[term];
+      $scope.blocks[block].terms[term] = temp;
+    };
+    
+    $scope.termDown = function(term, block) {
+      var temp = $scope.blocks[block].terms[term+1];
+      $scope.blocks[block].terms[term+1] = $scope.blocks[block].terms[term];
+      $scope.blocks[block].terms[term] = temp;
+    };
 
-    $scope.list4 = [guid(), guid()];
     $scope.hideMe = function(terms) {
       return terms.length == 0;
+    };
+    
+    $scope.log = function(){
+      console.log($scope.blocks);
     };
   });
 
