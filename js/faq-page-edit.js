@@ -48,6 +48,18 @@
       $scope.blocks.splice(id, 1);
     };
 
+    $scope.blockUp = function(block) {
+      var temp = $scope.blocks[block - 1];
+      $scope.blocks[block - 1] = $scope.blocks[block];
+      $scope.blocks[block] = temp;
+    };
+
+    $scope.blockDown = function(block) {
+      var temp = $scope.blocks[block + 1];
+      $scope.blocks[block + 1] = $scope.blocks[block];
+      $scope.blocks[block] = temp;
+    };
+
     $scope.termUp = function(term, block) {
       var temp = $scope.blocks[block].terms[term - 1];
       $scope.blocks[block].terms[term - 1] = $scope.blocks[block].terms[term];
@@ -59,17 +71,9 @@
       $scope.blocks[block].terms[term + 1] = $scope.blocks[block].terms[term];
       $scope.blocks[block].terms[term] = temp;
     };
-
-    $scope.blockUp = function(block) {
-      var temp = $scope.blocks[block - 1];
-      $scope.blocks[block - 1] = $scope.blocks[block];
-      $scope.blocks[block] = temp;
-    };
-
-    $scope.blockDown = function(block) {
-      var temp = $scope.blocks[block + 1];
-      $scope.blocks[block + 1] = $scope.blocks[block];
-      $scope.blocks[block] = temp;
+    
+    $scope.deleteTerm = function(term, block) {
+      $scope.blocks[block].terms.splice(term, 1);
     };
 
     $scope.hideMe = function(terms) {

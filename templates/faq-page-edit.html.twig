@@ -33,9 +33,10 @@
                   data-jqyoui-options="{revert: 'invalid', helper: 'clone'}" 
                   ng-model="block.terms" 
                   jqyoui-draggable="{index: {[{$index}]},animate:true}">
+                <td>{[{term.name}]}</td>
                 <td><a href="" ng-show="!$first" ng-click="termUp($index, $parent.$index)">up</a></td>
                 <td><a href="" ng-show="!$last" ng-click="termDown($index, $parent.$index)">down</a></td>
-                <td>{[{term.name}]}</td>
+                <td><a href="" ng-click="deleteTerm($index, $parent.$index)">delete</a></td>
               </tr>
               <tr colspan="3" ng-show="hideMe(block.terms)"><td>((Add your items here))</td></tr>
             </tbody>
