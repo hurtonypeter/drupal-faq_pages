@@ -1,0 +1,5 @@
+services:
+  faq_pages.path_subscriber:
+    class: Drupal\faq_pages\FaqPagesPathSubscriber
+    tags:
+      - { name: event_subscriber }

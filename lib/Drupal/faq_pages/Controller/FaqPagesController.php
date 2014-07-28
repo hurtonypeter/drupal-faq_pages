@@ -38,7 +38,7 @@ class FaqPagesController extends ControllerBase {
     $rows = array();
     foreach ($result as $key => $row) {
       $rows[$key] = array($row->title, $row->description);
-      $rows[$key][] = l('faq/' . $row->url, 'faq/' . $row->url);
+      $rows[$key][] = l($row->url, $row->url);
       $actions = array(
         '#type' => 'dropbutton',
         '#links' => array(
