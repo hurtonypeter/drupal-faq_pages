@@ -21,7 +21,7 @@
     $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
   });
 
-  app.controller('probaCtrl', function($scope) {
+  app.controller('probaCtrl', function($scope, $http) {
     $scope.terms = $.map(drupalSettings.term_model, function(value, index) {
       return [value];
     });
@@ -82,6 +82,15 @@
       return terms.length == 0;
     };
 
+    $scope.savePage = function(){
+      $http.post('/drupal8/faq/save-page', $scope.model, {
+        headers: {
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+        }
+      }).success(function(data) {
+        console.log(data);
+      });
+    }
   });
 
 })(jQuery);

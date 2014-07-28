@@ -11,6 +11,8 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\faq\FaqHelper;
 use Drupal\faq_pages\FaqPageViewModel;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Controller routines for FAQ Pages routes.
@@ -95,6 +97,19 @@ class FaqPagesController extends ControllerBase {
     $build['#markup'] = drupal_render($content);
     
     return $build;
+  }
+  
+  public function savePage(Request $request) {
+    $params = array();
+    $content = $request->getContent();
+    
+    if (!empty($content)) {
+      // 2nd param to get as array
+      //$decoder = \Drupal::service('serialization
+      $params = json_decode($content, TRUE);
+    }
+    
+    return new JsonResponse(array('back' => $params));
   }
 
   /**
