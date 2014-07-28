@@ -4,27 +4,27 @@
     <div class="clearfix">
       <div style="width:70%;float:left;">
         <div class="form-item form-type-textfield">
-          <label for="edit-faq-page-title">Title</label>
+          <label for="edit-faq-page-title">{{ 'Title'|trans }}</label>
           <input type="text" id="edit-faq-page-title" class="form-text" size="60" ng-model="model.title" />
         </div>
         <div class="form-item form-type-textfield">
-          <label for="edit-faq-page-path">Path</label>
+          <label for="edit-faq-page-path">{{ 'Path'|trans }}</label>
           <input type="text" id="edit-faq-page-path" class="form-text" size="60" ng-model="model.url" />
         </div>
         <div class="form-item form-type-textarea form-item-faq-description">
-          <label for="edit-faq-page-description">Description</label>
+          <label for="edit-faq-page-description">{{ 'Description'|trans }}</label>
           <div class="form-textarea-wrapper">
             <textarea rows="5" cols="60" id="edit-faq-page-description" class="form-textarea resize-vertical" ng-model="model.description"></textarea>
           </div>
         </div>
 
-        <h2>Blocks</h2>
+        <h2>{{ 'Blocks'|trans }}</h2>
         <div ng-repeat="block in model.blocks" style="position:relative;border:1px solid #ccc;padding:10px;margin-bottom:15px;">
-          <label>Block title</label>
+          <label>{{ 'Block title'|trans }}</label>
           <input type="text" ng-model="block.name" />
-          <label>Description</label>
+          <label>{{ 'Description'|trans }}</label>
           <textarea ng-model="block.description"></textarea>
-          <label>Terms</label>
+          <label>{{ 'Terms'|trans }}</label>
           <table>
             <tbody data-drop="true" ng-model="block.terms" jqyoui-droppable="{multiple:true}">
               <tr ng-repeat="term in block.terms track by $index" 
@@ -34,26 +34,26 @@
                   ng-model="block.terms" 
                   jqyoui-draggable="{index: {[{$index}]},animate:true}">
                 <td>{[{term.name}]}</td>
-                <td><a href="" ng-show="!$first" ng-click="termUp($index, $parent.$index)">up</a></td>
-                <td><a href="" ng-show="!$last" ng-click="termDown($index, $parent.$index)">down</a></td>
-                <td><a href="" ng-click="deleteTerm($index, $parent.$index)">delete</a></td>
+                <td><a href="" ng-show="!$first" ng-click="termUp($index, $parent.$index)">{{ 'up'|trans }}</a></td>
+                <td><a href="" ng-show="!$last" ng-click="termDown($index, $parent.$index)">{{ 'down'|trans }}</a></td>
+                <td><a href="" ng-click="deleteTerm($index, $parent.$index)">{{ 'delete'|trans }}</a></td>
               </tr>
-              <tr colspan="3" ng-show="hideMe(block.terms)"><td>((Add your items here))</td></tr>
+              <tr colspan="3" ng-show="hideMe(block.terms)"><td>(({{'Add your items here'|trans }}))</td></tr>
             </tbody>
           </table>
           <div style="position: absolute;top: 10px;right: 10px;">
-            <span ng-show="!$first"><a href="" ng-click="blockUp($index)">up</a> |</span> 
-            <span ng-show="!$last"><a href="" ng-click="blockDown($index)">down</a> |</span> 
-            <a href="" ng-click="deleteBlock($index)">delete</a>
+            <span ng-show="!$first"><a href="" ng-click="blockUp($index)">{{ 'up'|trans }}</a> |</span> 
+            <span ng-show="!$last"><a href="" ng-click="blockDown($index)">{{ 'down'|trans }}</a> |</span> 
+            <a href="" ng-click="deleteBlock($index)">{{ 'delete'|trans }}</a>
           </div>
         </div>
-        <p><a href="" ng-click="newBlock()">Add new block</a></p>
+        <p><a href="" ng-click="newBlock()">{{ 'Add new block'|trans }}</a></p>
       </div>
 
       <div style="width:27%;float:left;padding-left:3%;">
         <div>
-          <h2>Taxonomy terms</h2>
-          <p>Drag from here the terms you would like to add to a block.</p>
+          <h2>{{ 'Taxonomy terms'|trans }}</h2>
+          <p>{{ 'Drag from here the terms you would like to add to a block.'|trans }}</p>
           <ul>
             <li ng-repeat="term in terms" 
                 ng-show="term.name" 
