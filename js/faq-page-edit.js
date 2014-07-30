@@ -22,6 +22,7 @@
   });
 
   app.controller('probaCtrl', function($scope, $http) {
+
     $scope.terms = $.map(drupalSettings.term_model, function(value, index) {
       return [value];
     });
@@ -31,23 +32,40 @@
       url: '/sdf',
       description: 'little descrp',
       blocks: [
-        {id: 1, name: 'blokk1', description: 'blockdecrtiption1', terms: []},
-        {id: 2, name: 'blocck2', description: 'blockdecrtiption2', terms: []},
-        {id: 3, name: 'blokk3', description: 'blockdecrtiption3', terms: []}
+        {
+          id: 1,
+          name: 'blokk1',
+          topics: [
+            {toid: null, name: 'ez itt az első topic', description: 'little topic description', terms: []},
+            {toid: 6, name: 'egy újabb topic', description: 'more topic description', terms: []}
+          ]
+        },
+        {
+          id: 2,
+          name: 'blocck2',
+          topics: []
+        },
+        {
+          id: null,
+          name: 'blokk3',
+          topics: []
+        }
       ]
     };
 
+    /**
+     * Block organizing functions
+     */
     $scope.newBlock = function() {
       $scope.model.blocks.push({
         id: null,
         name: '',
-        description: '',
-        terms: [],
+        topics: [],
       });
     };
 
-    $scope.deleteBlock = function(id) {
-      $scope.model.blocks.splice(id, 1);
+    $scope.deleteBlock = function(block) {
+      $scope.model.blocks.splice(block, 1);
     };
 
     $scope.blockUp = function(block) {
@@ -62,27 +80,58 @@
       $scope.model.blocks[block] = temp;
     };
 
-    $scope.termUp = function(term, block) {
-      var temp = $scope.model.blocks[block].terms[term - 1];
-      $scope.model.blocks[block].terms[term - 1] = $scope.model.blocks[block].terms[term];
-      $scope.model.blocks[block].terms[term] = temp;
+    /**
+     * Topic organizing functions
+     */
+    $scope.newTopic = function(block) {
+      $scope.model.blocks[block].topics.push({
+        toid: null,
+        name: '',
+        description: '',
+        terms: []
+      });
+    }
+
+    $scope.deleteTopic = function(topic, block) {
+      $scope.model.blocks[block].topics.splice(topic, 1);
+    }
+
+    $scope.topicUp = function(topic, block) {
+      var temp = $scope.model.blocks[block].topics[topic - 1];
+      $scope.model.blocks[block].topics[topic - 1] = $scope.model.blocks[block].topics[topic];
+      $scope.model.blocks[block].topics[topic] = temp;
+    }
+
+    $scope.topicDown = function(topic, block) {
+      var temp = $scope.model.blocks[block].topics[topic + 1];
+      $scope.model.blocks[block].topics[topic + 1] = $scope.model.blocks[block].topics[topic];
+      $scope.model.blocks[block].topics[topic] = temp;
+    }
+
+    /*
+     * Term organizing functions
+     */
+    $scope.termUp = function(term, topic, block) {
+      var temp = $scope.model.blocks[block].topics[topic].terms[term - 1];
+      $scope.model.blocks[block].topics[topic].terms[term - 1] = $scope.model.blocks[block].topics[topic].terms[term];
+      $scope.model.blocks[block].topics[topic].terms[term] = temp;
     };
 
-    $scope.termDown = function(term, block) {
-      var temp = $scope.model.blocks[block].terms[term + 1];
-      $scope.model.blocks[block].terms[term + 1] = $scope.model.blocks[block].terms[term];
-      $scope.model.blocks[block].terms[term] = temp;
+    $scope.termDown = function(term, topic, block) {
+      var temp = $scope.model.blocks[block].topics[topic].terms[term + 1];
+      $scope.model.blocks[block].topics[topic].terms[term + 1] = $scope.model.blocks[block].topics[topic].terms[term];
+      $scope.model.blocks[block].topics[topic].terms[term] = temp;
     };
 
-    $scope.deleteTerm = function(term, block) {
-      $scope.model.blocks[block].terms.splice(term, 1);
+    $scope.deleteTerm = function(term, topic, block) {
+      $scope.model.blocks[block].topics[topic].terms.splice(term, 1);
     };
 
     $scope.hideMe = function(terms) {
       return terms.length == 0;
     };
 
-    $scope.savePage = function(){
+    $scope.savePage = function() {
       $http.post('/drupal8/faq/save-page', $scope.model, {
         headers: {
           'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
