@@ -71,12 +71,14 @@ class FaqPagesController extends ControllerBase {
     return $build;
   }
 
-  public function editPage() {
+  public function editPage($page) {
     $vocabs = FaqHelper::faqRelatedVocabularies();
     $query = db_select('taxonomy_term_data', 'ttd');
     $query->fields('ttd', array('tid', 'name', 'vid'));
     $query->condition('vid', array_keys($vocabs));
     $terms = $query->execute()->fetchAllAssoc('tid');
+    
+    $faq_page = new FaqPageViewModel($page, FALSE);
     
     $build = array();
     $build['#title'] = $this->t("Create custom FAQ page");
@@ -85,6 +87,7 @@ class FaqPagesController extends ControllerBase {
       array(
         'data' => array(
           'term_model' => $terms,
+          'edit_model' => $faq_page->getEditModel(),
         ),
         'type' => 'setting'
       )

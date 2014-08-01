@@ -1,5 +1,7 @@
 (function($) {
   "use strict";
+  
+  console.log(drupalSettings);
 
   var guid = (function() {
     function s4() {
@@ -27,7 +29,7 @@
       return [value];
     });
 
-    $scope.model = {
+    /*$scope.model = {
       title: 'muhahhahaha',
       url: '/sdf',
       description: 'little descrp',
@@ -51,7 +53,8 @@
           topics: []
         }
       ]
-    };
+    };*/
+    $scope.model = drupalSettings.edit_model;
 
     /**
      * Block organizing functions
