@@ -71,6 +71,14 @@ class FaqPagesController extends ControllerBase {
     return $build;
   }
 
+  /**
+   * Edit the FAQ page with the given id. If no ID specified,
+   * create an empty model for a new page.
+   * 
+   * @param integer $page
+   *   Identigier of the page. Use null to create new page.
+   * @return array Array for the builder.
+   */
   public function editPage($page = NULL) {
     $vocabs = FaqHelper::faqRelatedVocabularies();
     $vids = array();
@@ -119,6 +127,14 @@ class FaqPagesController extends ControllerBase {
     return $build;
   }
   
+  /**
+   * Save the given FAQ page asyncronously.
+   * 
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *   The frameworks Request object, containing the json model.
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   Respone with json to the angular app.
+   */
   public function savePage(Request $request) {
     $params = array();
     $content = $request->getContent();
@@ -176,6 +192,11 @@ class FaqPagesController extends ControllerBase {
     return $build;
   }
 
+  /**
+   * Deletes the FAQ page with the given ID.
+   * 
+   * @param integer $page The FAQ page id.
+   */
   public function deletePage($page) {
     
   }
