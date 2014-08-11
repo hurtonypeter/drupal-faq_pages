@@ -108,8 +108,10 @@ class FaqPagesController extends ControllerBase {
     
     if (!empty($content)) {
       // 2nd param to get as array
-      //$decoder = \Drupal::service('serialization
-      $params = json_decode($content, TRUE);
+      $data = json_decode($content, TRUE);
+      
+      $model = new FaqPageViewModel($data['id']);
+      $model->saveEditModel($data);
     }
     
     return new JsonResponse(array('back' => $params));

@@ -55,7 +55,7 @@
       ]
     };*/
     $scope.model = drupalSettings.edit_model;
-
+    console.log($scope.model);
     /**
      * Block organizing functions
      */

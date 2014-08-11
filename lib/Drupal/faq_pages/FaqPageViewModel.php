@@ -90,6 +90,7 @@ class FaqPageViewModel {
    * @return array Raw data of the FAQ page from the database.
    */
   private function queryDatabase() {
+    //TODO: cache this query
     $query = db_select('faq_pages', 's');
     $query->leftJoin('faq_pages_blocks', 'b', 'b.sid = s.sid');
     $query->leftJoin('faq_pages_topics', 'topic', 'topic.bid = b.bid');
@@ -259,6 +260,7 @@ class FaqPageViewModel {
   public function getEditModel() {
     $model = array();
 
+    $model['id'] = $this->data[0]->sid;
     $model['title'] = $this->data[0]->title;
     $model['url'] = $this->data[0]->url;
     $model['description'] = $this->data[0]->description;
@@ -267,7 +269,7 @@ class FaqPageViewModel {
         $model['blocks'][$row->bid]['id'] = $row->bid;
         $model['blocks'][$row->bid]['name'] = $row->name;
         if (!is_null($row->toid)) {
-          $model['blocks'][$row->bid]['topics'][$row->toid]['toid'] = $row->toid;
+          $model['blocks'][$row->bid]['topics'][$row->toid]['id'] = $row->toid;
           $model['blocks'][$row->bid]['topics'][$row->toid]['name'] = $row->topic_name;
           $model['blocks'][$row->bid]['topics'][$row->toid]['description'] = $row->topic_description;
           if (!is_null($row->tid)) {
@@ -277,12 +279,93 @@ class FaqPageViewModel {
         }
       }
     }
-    
+
     return $model;
   }
 
-  public static function saveEditModel(array $model) {
-    
+  public function saveEditModel(array $model) {
+    $saved = $this->getEditModel();
+
+    if (is_null($model['id'])) {
+      $pageId = db_insert('faq_pages')
+          ->fields(array(
+            'title' => $model['title'],
+            'url' => $model['url'],
+            'description' => $model['description'],
+          ))->execute();
+    }
+    else {
+      $pageId = $model['id'];
+      db_update('faq_pages')
+        ->fields(array(
+          'title' => $model['title'],
+          'url' => $model['url'],
+          'description' => $model['description'],
+        ))
+        ->condition('sid', $pageId, '=')
+        ->execute();
+    }
+    foreach ($model['blocks'] as $block) {
+      if (is_null($block['id'])) {
+        //insert
+        $blockId = db_insert('faq_pages_blocks')
+            ->fields(array(
+              'sid' => $pageId,
+              'name' => $block['name'],
+            ))->execute();
+      }
+      else {
+        //update
+        $blockId = $block['id'];
+        db_update('faq_pages_blocks')
+          ->fields(array(
+            'sid' => $pageId,
+            'name' => $block['name'],
+          ))
+          ->condition('bid', $blockId, '=')
+          ->execute();
+      }
+      foreach ($block['topics'] as $topic) {
+        if (is_null($topic['id'])) {
+          //insert
+          $topicId = db_insert('faq_pages_topics')
+              ->fields(array(
+                'bid' => $blockId,
+                'name' => $topic['name'],
+                'description' => $topic['description'],
+              ))->execute();
+        }
+        else {
+          //update
+          $topicId = $topic['id'];
+          db_update('faq_pages_topics')
+            ->fields(array(
+              'bid' => $blockId,
+              'name' => $topic['name'],
+              'description' => $topic['description'],
+            ))->condition('toid', $topicId, '=')
+            ->execute();
+        }
+      }
+    }
+
+//    db_merge('faq_pages')
+//      ->key(array('sid' => 5))
+//      ->fields(array(
+//        'title' => 'db_merge próbafaq',
+//        'url' => 'kukukuk',
+//        'description' => 'asdsddsds',
+//      ))->execute();
+    var_dump($original);
+    //save the faq page
+//    db_merge('faq_pages')
+//      ->key(array('sid' => $model['id']))
+//      ->fields(array(
+//        'title' => $model['title'],
+//        'url' => $model['url'],
+//        'description' => $model['description'],
+//      ))->execute();
+//    
   }
 
 }
