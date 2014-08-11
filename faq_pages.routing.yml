@@ -24,6 +24,7 @@ faq_pages.custom-page:
 faq_pages.edit-page:
     path: '/faq/{page}/edit'
     defaults:
+        _title: 'Edit FAQ page'
         _content: 'Drupal\faq_pages\Controller\FaqPagesController::editPage'
     requirements:
         _permission: 'create faq pages'
@@ -38,6 +39,6 @@ faq_pages.save-page:
 faq_pages.delete-page:
     path: '/faq/{page}/delete'
     defaults:
-        _content: 'DRupal\faq_pages\Controller\FaqPagesController:deletePage'
+        _content: 'Drupal\faq_pages\Controller\FaqPagesController:deletePage'
     requirements:
-         _permission: 'create faq pages'
+        _permission: 'create faq pages'

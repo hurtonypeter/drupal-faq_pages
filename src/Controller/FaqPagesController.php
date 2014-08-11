@@ -71,23 +71,40 @@ class FaqPagesController extends ControllerBase {
     return $build;
   }
 
-  public function editPage($page) {
+  public function editPage($page = NULL) {
     $vocabs = FaqHelper::faqRelatedVocabularies();
-    $query = db_select('taxonomy_term_data', 'ttd');
-    $query->fields('ttd', array('tid', 'name', 'vid'));
-    $query->condition('vid', array_keys($vocabs));
+    $vids = array();
+    foreach($vocabs as $vocab) {
+      $vids[] = $vocab->id();
+    }
+    
+    $query = db_select('taxonomy_term_data', 'td');
+    $query->join('taxonomy_term_field_data', 'ttfd', 'td.tid = ttfd.tid');
+    $query->condition('td.vid', $vids, 'IN');
+    $query->fields('ttfd', array('tid', 'name', 'description__value'));
     $terms = $query->execute()->fetchAllAssoc('tid');
     
-    $faq_page = new FaqPageViewModel($page, FALSE);
+    if($page == NULL) {
+      $faq_page = array(
+        'id' => null,
+        'title' => '',
+        'url' => '',
+        'description' => '',
+        'blocks' => array(),
+      );
+    }
+    else {
+      $faq_page_model = new FaqPageViewModel($page, FALSE);
+      $faq_page = $faq_page_model->getEditModel();
+    }
     
     $build = array();
-    $build['#title'] = $this->t("Create custom FAQ page");
     $build['#attached']['library'][] = 'faq_pages/faq_page-edit';
     $build['#attached']['js'] = array(
       array(
         'data' => array(
           'term_model' => $terms,
-          'edit_model' => $faq_page->getEditModel(),
+          'edit_model' => $faq_page,
         ),
         'type' => 'setting'
       )
@@ -159,4 +176,7 @@ class FaqPagesController extends ControllerBase {
     return $build;
   }
 
+  public function deletePage($page) {
+    
+  }
 }
