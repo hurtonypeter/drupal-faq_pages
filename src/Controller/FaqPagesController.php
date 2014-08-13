@@ -89,7 +89,7 @@ class FaqPagesController extends ControllerBase {
     $query = db_select('taxonomy_term_data', 'td');
     $query->join('taxonomy_term_field_data', 'ttfd', 'td.tid = ttfd.tid');
     $query->condition('td.vid', $vids, 'IN');
-    $query->fields('ttfd', array('tid', 'name', 'description__value'));
+    $query->fields('ttfd', array('tid', 'name'));
     $terms = $query->execute()->fetchAllAssoc('tid');
     
     if($page == NULL) {

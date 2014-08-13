@@ -226,13 +226,18 @@ class FaqPageViewModel {
     $topics = array();
 
     foreach ($this->data as $row) {
-      $topics[$row->toid]['toid'] = $row->toid;
-      $topics[$row->toid]['title'] = $row->topic_name;
-      $topics[$row->toid]['description'] = $row->topic_description;
-      if (!isset($topics[$row->toid]['terms'][$row->tid])) {
-        $topics[$row->toid]['terms'][$row->tid]['term'] = $this->getTerm($row->tid);
+      if (!is_null($row->toid)) {
+        $topics[$row->toid]['toid'] = $row->toid;
+        $topics[$row->toid]['title'] = $row->topic_name;
+        $topics[$row->toid]['description'] = $row->topic_description;
+        if (!is_null($row->tid) &&
+          !isset($topics[$row->toid]['terms'][$row->tid])) {
+          $topics[$row->toid]['terms'][$row->tid]['term'] = $this->getTerm($row->tid);
+        }
+        if (!is_null($row->nid)) {
+          $topics[$row->toid]['terms'][$row->tid]['nodes'][]['node'] = $this->getNode($row->nid);
+        }
       }
-      $topics[$row->toid]['terms'][$row->tid]['nodes'][]['node'] = $this->getNode($row->nid);
     }
 
     return $topics;
@@ -247,11 +252,15 @@ class FaqPageViewModel {
     $blocks = array();
 
     foreach ($this->data as $row) {
-      $blocks[$row->bid]['id'] = $row->bid;
-      $blocks[$row->bid]['title'] = $row->name;
-      $blocks[$row->bid]['topics'][$row->toid]['id'] = $row->toid;
-      $blocks[$row->bid]['topics'][$row->toid]['name'] = $row->topic_name;
-      $blocks[$row->bid]['topics'][$row->toid]['description'] = $row->topic_description;
+      if (!is_null($row->bid)) {
+        $blocks[$row->bid]['id'] = $row->bid;
+        $blocks[$row->bid]['title'] = $row->name;
+        if (!is_null($row->toid)) {
+          $blocks[$row->bid]['topics'][$row->toid]['id'] = $row->toid;
+          $blocks[$row->bid]['topics'][$row->toid]['name'] = $row->topic_name;
+          $blocks[$row->bid]['topics'][$row->toid]['description'] = $row->topic_description;
+        }
+      }
     }
 
     return $blocks;

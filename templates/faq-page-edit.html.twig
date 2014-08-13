@@ -50,7 +50,7 @@
                   <td><a href="" ng-show="!$last" ng-click="termDown($index, $parent.$index, $parent.$parent.$index)">{{ 'down'|trans }}</a></td>
                   <td><a href="" ng-click="deleteTerm($index, $parent.$index, $parent.$parent.$index)">{{ 'delete'|trans }}</a></td>
                 </tr>
-                <tr colspan="3" ng-show="hideMe(topic.terms)"><td>(({{'Add your items here'|trans }}))</td></tr>
+                <tr ng-show="hideMe(topic.terms)"><td colspan="2">(({{'Add your items here'|trans }}))</td></tr>
               </tbody>
             </table>
             <div style="position: absolute;top: 10px;right: 10px;">
