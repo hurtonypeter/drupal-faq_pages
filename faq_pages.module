@@ -48,37 +48,39 @@ function template_preprocess_faq_pages_questions(&$variables) {
   $data = $variables['topics'];
   
   foreach ($data as $toid=>$topic) {
-    foreach ($topic['terms'] as $tid=>$term) {
-      // keep only the name of the term
-      $data[$toid]['terms'][$tid]['term'] = $term['term']->getName();
-      
-      foreach ($term['nodes'] as $nid=>$node) {
-        $node_render = node_view($node['node'], 'full');
-        $rendered_node = drupal_render($node_render);
-        
-        $nodeid = $node['node']->id();
-        $title = $node['node']->getTitle();
-        
-        $data[$toid]['terms'][$tid]['nodes'][$nid]['nid'] = $nodeid;
-        $data[$toid]['terms'][$tid]['nodes'][$nid]['title'] = $title;
-        
-        $new_node = array(
-          'nid' => $nodeid,
-          'title' => $title,
-          'content' => $rendered_node,
-        );
-        
-        // initialize the array for the in_array()
-        if(!isset($data[$toid]['nodes'])) {
-          $data[$toid]['nodes'] = array();
+    if(isset($topic['terms'])) {
+      foreach ($topic['terms'] as $tid=>$term) {
+        // keep only the name of the term
+        $data[$toid]['terms'][$tid]['term'] = $term['term']->getName();
+
+        foreach ($term['nodes'] as $nid=>$node) {
+          $node_render = node_view($node['node'], 'full');
+          $rendered_node = drupal_render($node_render);
+
+          $nodeid = $node['node']->id();
+          $title = $node['node']->getTitle();
+
+          $data[$toid]['terms'][$tid]['nodes'][$nid]['nid'] = $nodeid;
+          $data[$toid]['terms'][$tid]['nodes'][$nid]['title'] = $title;
+
+          $new_node = array(
+            'nid' => $nodeid,
+            'title' => $title,
+            'content' => $rendered_node,
+          );
+
+          // initialize the array for the in_array()
+          if(!isset($data[$toid]['nodes'])) {
+            $data[$toid]['nodes'] = array();
+          }
+          // save full content only once per topic
+          if (!in_array($new_node, $data[$toid]['nodes'])) {
+            $data[$toid]['nodes'][] = $new_node;
+          }
+
+          // dont send the full node object to the template
+          unset($data[$toid]['terms'][$tid]['nodes'][$nid]['node']);
         }
-        // save full content only once per topic
-        if (!in_array($new_node, $data[$toid]['nodes'])) {
-          $data[$toid]['nodes'][] = $new_node;
-        }
-        
-        // dont send the full node object to the template
-        unset($data[$toid]['terms'][$tid]['nodes'][$nid]['node']);
       }
     }
   }

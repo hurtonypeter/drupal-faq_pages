@@ -7,7 +7,6 @@ package: FAQ
 dependencies:
  - faq
  - angularjs
- - serialization
 libraries:
  - faq_pages/faq_page-scripts
  - faq_pages/faq_page-edit

@@ -82,17 +82,17 @@ class FaqPagesController extends ControllerBase {
   public function editPage($page = NULL) {
     $vocabs = FaqHelper::faqRelatedVocabularies();
     $vids = array();
-    foreach($vocabs as $vocab) {
+    foreach ($vocabs as $vocab) {
       $vids[] = $vocab->id();
     }
-    
+
     $query = db_select('taxonomy_term_data', 'td');
     $query->join('taxonomy_term_field_data', 'ttfd', 'td.tid = ttfd.tid');
     $query->condition('td.vid', $vids, 'IN');
     $query->fields('ttfd', array('tid', 'name'));
     $terms = $query->execute()->fetchAllAssoc('tid');
-    
-    if($page == NULL) {
+
+    if ($page == NULL) {
       $faq_page = array(
         'id' => null,
         'title' => '',
@@ -105,7 +105,7 @@ class FaqPagesController extends ControllerBase {
       $faq_page_model = new FaqPageViewModel($page, FALSE);
       $faq_page = $faq_page_model->getEditModel();
     }
-    
+
     $build = array();
     $build['#attached']['library'][] = 'faq_pages/faq_page-edit';
     $build['#attached']['js'] = array(
@@ -117,16 +117,16 @@ class FaqPagesController extends ControllerBase {
         'type' => 'setting'
       )
     );
-    
+
     $content = array(
       '#theme' => 'faq_page_edit',
     );
     $build['#type'] = 'markup';
     $build['#markup'] = drupal_render($content);
-    
+
     return $build;
   }
-  
+
   /**
    * Save the given FAQ page asyncronously.
    * 
@@ -136,18 +136,27 @@ class FaqPagesController extends ControllerBase {
    *   Respone with json to the angular app.
    */
   public function savePage(Request $request) {
-    $params = array();
+    //TODO: catch errors and parse them to an errormessage
     $content = $request->getContent();
-    
+
     if (!empty($content)) {
       // 2nd param to get as array
       $data = json_decode($content, TRUE);
-      
+
       $model = new FaqPageViewModel($data['id'], FALSE);
       $model->saveEditModel($data);
+      $model->reloadRaw();
+
+      return new JsonResponse(array(
+        'error' => false,
+        'data' => $model->getEditModel(),
+      ));
     }
-    
-    return new JsonResponse(array('back' => $params));
+
+    return new JsonResponse(array(
+      'error' => true,
+      'errorMessage' => 'There is something wrong',
+    ));
   }
 
   /**
@@ -166,7 +175,7 @@ class FaqPagesController extends ControllerBase {
 
     $build = array();
     $build['#title'] = $model->getTitle();
-    
+
     $build['#attached']['library'][] = 'faq_pages/faq_page-scripts';
 
     $blocks_render = array(
@@ -200,4 +209,5 @@ class FaqPagesController extends ControllerBase {
   public function deletePage($page) {
     
   }
+
 }

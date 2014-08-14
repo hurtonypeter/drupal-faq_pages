@@ -156,6 +156,13 @@ class FaqPageViewModel {
   }
 
   /**
+   * Reloads only the raw data from database after editing
+   */
+  public function reloadRaw() {
+    $this->data = $this->queryDatabase();
+  }
+
+  /**
    * Gives back the node with the given id if exists.
    * 
    * @param int $nid
@@ -245,7 +252,6 @@ class FaqPageViewModel {
         $topics[$row->toid]['toid'] = $row->toid;
         $topics[$row->toid]['title'] = $row->topic_name;
         $topics[$row->toid]['description'] = $row->topic_description;
-        $topics[$row->toid]['terms'] = array();
         if (!is_null($row->tid) &&
           !isset($topics[$row->toid]['terms'][$row->tid])) {
           $topics[$row->toid]['terms'][$row->tid]['term'] = $this->getTerm($row->tid);
@@ -306,6 +312,22 @@ class FaqPageViewModel {
           if (!is_null($row->tid)) {
             $term = $this->getTerm($row->tid);
             $model['blocks'][$row->bid]['topics'][$row->toid]['terms'][$row->tid] = array('id' => $term->id(), 'name' => $term->getName());
+          }
+        }
+      }
+    }
+    
+    //map the model to valid indexes from zero for serialization reasons
+    $model['blocks'] = array_values($model['blocks']);
+    foreach ($model['blocks'] as $i => $block) {
+      if (isset($block['topics'])) {
+        $model['blocks'][$i]['topics'] = array_values($block['topics']);
+        foreach ($model['blocks'][$i]['topics'] as $j => $topic) {
+          if (isset($topic['terms'])) {
+            $model['blocks'][$i]['topics'][$j]['terms'] = array_values($model['blocks'][$i]['topics'][$j]['terms']);
+          }
+          else{
+            $model['blocks'][$i]['topics'][$j]['terms'] = array();
           }
         }
       }
@@ -405,7 +427,7 @@ class FaqPageViewModel {
     \Drupal::cache()->invalidate('faqpages:routes');
     \Drupal::cache()->invalidate('faqpages:page:$pageId');
 
-    return $pageId;
+    return $this->sid = $pageId;
   }
 
 }

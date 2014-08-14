@@ -3,17 +3,20 @@
 
   console.log(drupalSettings);
 
-  var guid = (function() {
-    function s4() {
-      return Math.floor((1 + Math.random()) * 0x10000)
-              .toString(16)
-              .substring(1);
-    }
-    return function() {
-      return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-              s4() + '-' + s4() + s4() + s4();
+  function mapModel(data) {
+    var tmp = {
+      id: data.id,
+      title: data.title,
+      url: data.url,
+      description: data.description,
+      blocks: [],
     };
-  })();
+    $.each(data.blocks, function(index, value) {
+      console.log(value);
+    });
+
+    return data;
+  }
 
   var app = angular.module('probaApp', ['ngDragDrop']);
   app.value('$', $);
@@ -29,33 +32,9 @@
       return [value];
     });
 
-    /*$scope.model = {
-     title: 'muhahhahaha',
-     url: '/sdf',
-     description: 'little descrp',
-     blocks: [
-     {
-     id: 1,
-     name: 'blokk1',
-     topics: [
-     {toid: null, name: 'ez itt az első topic', description: 'little topic description', terms: []},
-     {toid: 6, name: 'egy újabb topic', description: 'more topic description', terms: []}
-     ]
-     },
-     {
-     id: 2,
-     name: 'blocck2',
-     topics: []
-     },
-     {
-     id: null,
-     name: 'blokk3',
-     topics: []
-     }
-     ]
-     };*/
-    $scope.model = drupalSettings.edit_model;
+    $scope.model = mapModel(drupalSettings.edit_model);
     console.log($scope.model);
+
     /**
      * Block organizing functions
      */
@@ -135,12 +114,15 @@
     };
 
     $scope.savePage = function() {
-      $http.post('/d80x/faq/save-page', $scope.model, {
+      $http.post(drupalSettings.path.basePath + 'faq/save-page', $scope.model, {
         headers: {
           'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
         }
       }).success(function(data) {
         console.log(data);
+        if (!data.error) {
+
+        }
       });
     }
   });
