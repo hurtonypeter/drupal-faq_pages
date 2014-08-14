@@ -15,7 +15,7 @@ function faq_pages_schema() {
       'fields' => array(
         'sid' => array(
           'description' => 'FAQ site identifier.',
-          'type' => 'int',
+          'type' => 'serial',
           'unsigned' => TRUE,
           'not null' => TRUE,
         ),
@@ -45,7 +45,7 @@ function faq_pages_schema() {
       'fields' => array(
         'bid' => array(
           'description' => 'Block identifier.',
-          'type' => 'int',
+          'type' => 'serial',
           'unsigned' => TRUE,
           'not null' => TRUE,
         ),
@@ -71,7 +71,7 @@ function faq_pages_schema() {
       'fields' => array(
         'toid' => array(
           'descripction' => 'Idenfifier from the topic.',
-          'type' => 'int',
+          'type' => 'serial',
           'unsigned' => TRUE,
           'not null' => TRUE,
         ),
