@@ -3,21 +3,6 @@
 
   console.log(drupalSettings);
 
-  function mapModel(data) {
-    var tmp = {
-      id: data.id,
-      title: data.title,
-      url: data.url,
-      description: data.description,
-      blocks: [],
-    };
-    $.each(data.blocks, function(index, value) {
-      console.log(value);
-    });
-
-    return data;
-  }
-
   var app = angular.module('probaApp', ['ngDragDrop']);
   app.value('$', $);
 
@@ -32,7 +17,7 @@
       return [value];
     });
 
-    $scope.model = mapModel(drupalSettings.edit_model);
+    $scope.model = drupalSettings.edit_model;
     console.log($scope.model);
 
     /**
