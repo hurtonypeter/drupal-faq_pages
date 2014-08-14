@@ -1,6 +1,6 @@
 (function($) {
   "use strict";
-  
+
   console.log(drupalSettings);
 
   var guid = (function() {
@@ -30,30 +30,30 @@
     });
 
     /*$scope.model = {
-      title: 'muhahhahaha',
-      url: '/sdf',
-      description: 'little descrp',
-      blocks: [
-        {
-          id: 1,
-          name: 'blokk1',
-          topics: [
-            {toid: null, name: 'ez itt az első topic', description: 'little topic description', terms: []},
-            {toid: 6, name: 'egy újabb topic', description: 'more topic description', terms: []}
-          ]
-        },
-        {
-          id: 2,
-          name: 'blocck2',
-          topics: []
-        },
-        {
-          id: null,
-          name: 'blokk3',
-          topics: []
-        }
-      ]
-    };*/
+     title: 'muhahhahaha',
+     url: '/sdf',
+     description: 'little descrp',
+     blocks: [
+     {
+     id: 1,
+     name: 'blokk1',
+     topics: [
+     {toid: null, name: 'ez itt az első topic', description: 'little topic description', terms: []},
+     {toid: 6, name: 'egy újabb topic', description: 'more topic description', terms: []}
+     ]
+     },
+     {
+     id: 2,
+     name: 'blocck2',
+     topics: []
+     },
+     {
+     id: null,
+     name: 'blokk3',
+     topics: []
+     }
+     ]
+     };*/
     $scope.model = drupalSettings.edit_model;
     console.log($scope.model);
     /**
@@ -135,7 +135,7 @@
     };
 
     $scope.savePage = function() {
-      $http.post('/drupal8/faq/save-page', $scope.model, {
+      $http.post('/d80x/faq/save-page', $scope.model, {
         headers: {
           'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
         }

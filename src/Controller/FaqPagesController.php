@@ -143,7 +143,7 @@ class FaqPagesController extends ControllerBase {
       // 2nd param to get as array
       $data = json_decode($content, TRUE);
       
-      $model = new FaqPageViewModel($data['id']);
+      $model = new FaqPageViewModel($data['id'], FALSE);
       $model->saveEditModel($data);
     }
     

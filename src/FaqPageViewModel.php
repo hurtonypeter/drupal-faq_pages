@@ -44,6 +44,14 @@ class FaqPageViewModel {
   protected $data;
 
   /**
+   * Cache service.
+   * TODO: inject cache service here.
+   *
+   * @var Drupal\Core\Cache\CacheBackendInterface 
+   */
+  protected $cache;
+
+  /**
    * Constructs the FaqPageViewModel object. Don't forget to check
    * the $sid with FaqPageViewModel::isExists($sid) method first!
    * 
@@ -90,20 +98,27 @@ class FaqPageViewModel {
    * @return array Raw data of the FAQ page from the database.
    */
   private function queryDatabase() {
-    //TODO: cache this query
-    $query = db_select('faq_pages', 's');
-    $query->leftJoin('faq_pages_blocks', 'b', 'b.sid = s.sid');
-    $query->leftJoin('faq_pages_topics', 'topic', 'topic.bid = b.bid');
-    $query->leftJoin('faq_pages_terms', 't', 't.toid = topic.toid');
-    $query->leftJoin('taxonomy_index', 'ti', 'ti.tid = t.tid');
-    $query->fields('s', array('sid', 'url', 'title', 'description'));
-    $query->fields('b', array('bid', 'name'));
-    $query->fields('topic', array('toid', 'name', 'description'));
-    $query->fields('t', array('tid'));
-    $query->fields('ti', array('nid'));
-    $query->condition('s.sid', $this->sid);
+    $sid = $this->sid;
+    if ($cache = \Drupal::cache()->get('faqpages:page:$sid')) {
+      $result = $cache->data;
+    }
+    else {
+      $query = db_select('faq_pages', 's');
+      $query->leftJoin('faq_pages_blocks', 'b', 'b.sid = s.sid');
+      $query->leftJoin('faq_pages_topics', 'topic', 'topic.bid = b.bid');
+      $query->leftJoin('faq_pages_terms', 't', 't.toid = topic.toid');
+      $query->leftJoin('taxonomy_index', 'ti', 'ti.tid = t.tid');
+      $query->fields('s', array('sid', 'url', 'title', 'description'));
+      $query->fields('b', array('bid', 'name'));
+      $query->fields('topic', array('toid', 'name', 'description'));
+      $query->fields('t', array('tid'));
+      $query->fields('ti', array('nid'));
+      $query->condition('s.sid', $this->sid);
+      $result = $query->execute()->fetchAll();
+      \Drupal::cache()->set('faqpages:page:$sid', $result, REQUEST_TIME + 60);
+    }
 
-    return $query->execute()->fetchAll();
+    return $result;
   }
 
   /**
@@ -230,6 +245,7 @@ class FaqPageViewModel {
         $topics[$row->toid]['toid'] = $row->toid;
         $topics[$row->toid]['title'] = $row->topic_name;
         $topics[$row->toid]['description'] = $row->topic_description;
+        $topics[$row->toid]['terms'] = array();
         if (!is_null($row->tid) &&
           !isset($topics[$row->toid]['terms'][$row->tid])) {
           $topics[$row->toid]['terms'][$row->tid]['term'] = $this->getTerm($row->tid);
@@ -266,6 +282,12 @@ class FaqPageViewModel {
     return $blocks;
   }
 
+  /**
+   * Returns the edit model from the raw data.
+   * 
+   * @return array
+   *   Array of the edit model.
+   */
   public function getEditModel() {
     $model = array();
 
@@ -292,8 +314,16 @@ class FaqPageViewModel {
     return $model;
   }
 
+  /**
+   * Save the given model to database.
+   * 
+   * @param array $model
+   *   Model to save.
+   * @return integer
+   *   Identifier of the FAQ page.
+   */
   public function saveEditModel(array $model) {
-    $saved = $this->getEditModel();
+    //$saved = $this->getEditModel();
 
     if (is_null($model['id'])) {
       $pageId = db_insert('faq_pages')
@@ -355,26 +385,27 @@ class FaqPageViewModel {
             ))->condition('toid', $topicId, '=')
             ->execute();
         }
+
+        if (!empty($topic['terms'])) {
+          $topic_terms = array();
+          foreach ($topic['terms'] as $term) {
+            $topic_terms[] = array('toid' => $topicId, 'tid' => $term['tid']);
+          }
+          db_delete('faq_pages_terms')->condition('toid', $topicId)->execute();
+          $query = db_insert('faq_pages_terms')->fields(array('toid', 'tid'));
+          foreach ($topic_terms as $record) {
+            $query->values($record);
+          }
+          $query->execute();
+        }
       }
     }
 
-//    db_merge('faq_pages')
-//      ->key(array('sid' => 5))
-//      ->fields(array(
-//        'title' => 'db_merge próbafaq',
-//        'url' => 'kukukuk',
-//        'description' => 'asdsddsds',
-//      ))->execute();
-    var_dump($original);
-    //save the faq page
-//    db_merge('faq_pages')
-//      ->key(array('sid' => $model['id']))
-//      ->fields(array(
-//        'title' => $model['title'],
-//        'url' => $model['url'],
-//        'description' => $model['description'],
-//      ))->execute();
-//    
+    // invalidate route and data cache
+    \Drupal::cache()->invalidate('faqpages:routes');
+    \Drupal::cache()->invalidate('faqpages:page:$pageId');
+
+    return $pageId;
   }
 
 }
