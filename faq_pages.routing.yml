@@ -37,8 +37,9 @@ faq_pages.save-page:
         _permission: 'create faq pages'
 
 faq_pages.delete-page:
-    path: '/faq/{page}/delete'
+    path: '/admin/config/content/faq/faq-pages/delete/{page}'
     defaults:
-        _content: 'Drupal\faq_pages\Controller\FaqPagesController:deletePage'
+        _form: '\Drupal\faq_pages\Form\DeletePageForm'
+        _title: 'Delete FAQ page'
     requirements:
         _permission: 'create faq pages'

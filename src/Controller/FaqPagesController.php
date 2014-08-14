@@ -49,7 +49,7 @@ class FaqPagesController extends ControllerBase {
             'title' => $this->t('Edit'),
           ),
           array(
-            'href' => '/faq/' . $key . '/delete',
+            'href' => '/admin/config/content/faq/faq-pages/delete/' . $key,
             'title' => $this->t('Delete'),
           ),
         ),

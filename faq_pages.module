@@ -21,6 +21,7 @@ function faq_pages_permission() {
  * Implements hook_theme().
  */
 function faq_pages_theme() {
+  $list_page = new \Drupal\Core\Url('faq_pages.list');
   return array(
     'faq_pages_page' => array(
       'template' => 'faq-pages-page',
@@ -36,7 +37,7 @@ function faq_pages_theme() {
     ),
     'faq_page_edit' => array(
       'template' => 'faq-page-edit',
-      'variables' => array(),
+      'variables' => array('cancel_url' => $list_page->toString()),
     ),
   );
 }
