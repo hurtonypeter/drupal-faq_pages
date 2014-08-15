@@ -98,8 +98,7 @@ class FaqPageViewModel {
    * @return array Raw data of the FAQ page from the database.
    */
   private function queryDatabase() {
-    $sid = $this->sid;
-    if ($cache = \Drupal::cache()->get('faqpages:page:$sid')) {
+    if ($cache = \Drupal::cache()->get('faqpages:page:$this->sid')) {
       $result = $cache->data;
     }
     else {
@@ -115,7 +114,7 @@ class FaqPageViewModel {
       $query->fields('ti', array('nid'));
       $query->condition('s.sid', $this->sid);
       $result = $query->execute()->fetchAll();
-      \Drupal::cache()->set('faqpages:page:$sid', $result, REQUEST_TIME + 60);
+      \Drupal::cache()->set('faqpages:page:$this->sid', $result, REQUEST_TIME + 60);
     }
 
     return $result;
@@ -159,6 +158,7 @@ class FaqPageViewModel {
    * Reloads only the raw data from database after editing
    */
   public function reloadRaw() {
+    \Drupal::cache()->invalidate('faqpages:page:$this->sid');
     $this->data = $this->queryDatabase();
   }
 
@@ -427,7 +427,8 @@ class FaqPageViewModel {
     \Drupal::cache()->invalidate('faqpages:routes');
     \Drupal::cache()->invalidate('faqpages:page:$pageId');
 
-    return $this->sid = $pageId;
+    $this->sid = $pageId;
+    return $this->sid;
   }
 
 }

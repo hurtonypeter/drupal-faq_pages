@@ -106,7 +106,7 @@
       }).success(function(data) {
         console.log(data);
         if (!data.error) {
-
+          $scope.model = data.data;
         }
       });
     }

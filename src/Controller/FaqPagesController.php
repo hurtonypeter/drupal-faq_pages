@@ -136,21 +136,28 @@ class FaqPagesController extends ControllerBase {
    *   Respone with json to the angular app.
    */
   public function savePage(Request $request) {
-    //TODO: catch errors and parse them to an errormessage
     $content = $request->getContent();
 
     if (!empty($content)) {
       // 2nd param to get as array
-      $data = json_decode($content, TRUE);
+      try {
+        $data = json_decode($content, TRUE);
 
-      $model = new FaqPageViewModel($data['id'], FALSE);
-      $model->saveEditModel($data);
-      $model->reloadRaw();
+        $model = new FaqPageViewModel($data['id'], FALSE);
+        $model->saveEditModel($data);
+        $model->reloadRaw();
 
-      return new JsonResponse(array(
-        'error' => false,
-        'data' => $model->getEditModel(),
-      ));
+        return new JsonResponse(array(
+          'error' => false,
+          'data' => $model->getEditModel(),
+        ));
+      }
+      catch (Exception $exc) {
+        return new JsonResponse(array(
+          'error' => true,
+          'errorMessage' => 'There is something wrong.',
+        ));
+      }
     }
 
     return new JsonResponse(array(
