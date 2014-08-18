@@ -70,6 +70,11 @@ class DeletePageForm extends ConfirmFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $pageId = $this->routeMatcher->getRawParameter('page');
+    drupal_set_message('dssfd');
+    $list_page = new \Drupal\Core\Url('faq_pages.list');
+    $form_state['redirect'] = array(
+      '/admin/config/content/faq/faq-pages'
+    );
   }
 
 }

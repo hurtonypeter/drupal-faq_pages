@@ -1,6 +1,6 @@
 <div ng-app="probaApp">
   <div ng-controller="probaCtrl">
-
+    <div class="messages-container"></div>
     <div class="clearfix">
       <div style="width:70%;float:left;">
         <div class="form-item form-type-textfield">
@@ -84,7 +84,7 @@
           </ul>
         </div>
         <br/>
-        <button href="" ng-click="savePage()" class="button button--primary">{{ 'Save page'|trans }}</button>
+        <button ng-click="savePage()" class="button button--primary">{{ 'Save page'|trans }}</button>
         <a href="{{ cancel_url }}">Cancel</a>
       </div>
     </div>

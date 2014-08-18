@@ -208,13 +208,4 @@ class FaqPagesController extends ControllerBase {
     return $build;
   }
 
-  /**
-   * Deletes the FAQ page with the given ID.
-   * 
-   * @param integer $page The FAQ page id.
-   */
-  public function deletePage($page) {
-    
-  }
-
 }

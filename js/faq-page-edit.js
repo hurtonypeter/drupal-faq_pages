@@ -107,6 +107,14 @@
         console.log(data);
         if (!data.error) {
           $scope.model = data.data;
+          $('.messages-container').prepend($('<div class="messages messages--status" \
+            role="contentinfo" aria-label="Status message"><h2 class="visually-hidden">\
+            Status message</h2>Page is successfully saved!</div>').fadeIn('slow')).delay(5000).queue(function(next) {
+            $('.messages').fadeOut('slow', function() {
+              $(this).remove();
+            });
+            next();
+          });
         }
       });
     }
