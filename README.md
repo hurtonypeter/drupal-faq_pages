@@ -20,3 +20,5 @@ The structure of a custom FAQ page is the following:
 
 Note, that for this behaviour you have to add a taxonomy term reference
 to your FAQ content type.
+
+For development notes please see the [wiki page](https://github.com/hurtonypeter/drupal-faq_pages/wiki).
